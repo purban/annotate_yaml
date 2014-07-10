@@ -6,10 +6,12 @@ module AnnotateYaml
 
       files = Dir.glob("config/locales/*.yml")
       files.each do |file|
-        thing = YAML.load_file(file)
+        complete_yaml_file = File.open(file).read
+        # Remove the references
+        complete_yaml_file_without_references = complete_yaml_file.gsub(/<<: \*.*/, '')
+        yaml_hash = YAML::load(complete_yaml_file_without_references)
         array_of_hashes_of_values_with_keys = []
-        yaml_navigation(thing, [], array_of_hashes_of_values_with_keys)
-        # puts array_of_hashes_of_values_with_keys.inspect
+        yaml_navigation(yaml_hash, [], array_of_hashes_of_values_with_keys)
 
         string_result = ''
 
@@ -17,9 +19,12 @@ module AnnotateYaml
         text.gsub!(/\r\n?/, "\n")
         current_hash = array_of_hashes_of_values_with_keys.shift
         text.each_line do |line|
-          # puts "#{line}"
-
-          line_hash = YAML::load line
+          begin
+            line_hash = YAML::load line
+          rescue Exception => e
+            string_result += line
+            next
+          end
           if line_hash === false
             string_result += line
           else
@@ -44,7 +49,7 @@ module AnnotateYaml
       yaml_hash.each do |key, value|
         keys_array_updated = keys_array_origin.dup
         keys_array_updated.push(key)
-        result.push({ value => keys_array_updated.join('.') }) unless value.nil? || value.is_a?(Hash)
+        result.push({ value => keys_array_updated.join('.') }) unless value.nil? || value.is_a?(Hash) || value.is_a?(Array)
         yaml_navigation value, keys_array_updated, result if value.is_a?(Hash)
       end
     end
