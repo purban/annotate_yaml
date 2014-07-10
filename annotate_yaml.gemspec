@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["urban.pierre@gmail.com"]
   spec.summary       = %q{Annote YAML to annotate your YAML files.}
   spec.description   = %q{Annote YAML to annotate your YAML files}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/purban/annotate_yaml"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
