@@ -1,4 +1,4 @@
-# AnnotateYaml
+# AnnotateYaml [![Code Climate](https://codeclimate.com/github/purban/annotate_yaml/badges/gpa.svg)](https://codeclimate.com/github/purban/annotate_yaml)
 
 Have you never been bored to scroll up an entire YAML structure to find out how to access the value?
 
