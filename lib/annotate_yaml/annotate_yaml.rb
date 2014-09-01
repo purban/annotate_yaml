@@ -51,25 +51,27 @@ module AnnotateYaml
     end
 
     def annotate_line(line)
-      if line_hash = YAML::load(line)
-        _, line_value = line_hash.first
+      begin
+        if line_hash = YAML::load(line)
+          _, line_value = line_hash.first
 
-        if line_value.nil?
-          result << line
-        else
-          key, value = current_hash.first
-          if line_value == key
-            result << annotation_for_line(line, value)
-          else
+          if line_value.nil?
             result << line
+          else
+            key, value = current_hash.first
+            if line_value == key
+              result << annotation_for_line(line, value)
+            else
+              result << line
+            end
           end
+        else
+          result << line
         end
-      else
+      # YAML::load will generate an exception when references are used inside the yaml file. Exemple: errors: &errors
+      rescue Psych::BadAlias
         result << line
       end
-    # did exist before refactoring, not sure why
-    # rescue Exception
-    #   result << line
     end
 
     def annotation_for_line(line, value)
@@ -87,7 +89,9 @@ module AnnotateYaml
     end
 
     def hash_content
-      YAML.load_file(file_name)
+      # Remove the references inside the yaml file otherwise the hash will be duplicated at each reference, and we don't want that.
+      # Exemple of reference: <<: *errors
+      YAML.load(File.open(file_name).read.gsub(/<<: \*.*/, ''))
     end
 
     def array_of_hashes_of_values_with_keys
