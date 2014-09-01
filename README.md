@@ -1,4 +1,10 @@
-# AnnotateYaml [![Code Climate](https://codeclimate.com/github/purban/annotate_yaml/badges/gpa.svg)](https://codeclimate.com/github/purban/annotate_yaml)
+# AnnotateYaml
+[![Gem Version](http://img.shields.io/gem/v/annotate_yaml.svg?style=flat)][gem]
+[![Gem Total Download](http://img.shields.io/gem/dt/annotate_yaml.svg?style=flat)][gem]
+[![Code Climate](http://img.shields.io/codeclimate/github/purban/annotate_yaml.svg?style=flat)][codeclimate]
+
+[gem]: https://rubygems.org/gems/annotate_yaml
+[codeclimate]: https://codeclimate.com/github/purban/annotate_yaml
 
 Have you never been bored to scroll up an entire YAML structure to find out how to access the value?
 
